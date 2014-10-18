@@ -3,20 +3,13 @@ from node import Node
 class D_linked_list(object):
 
 
-	def __init__(self, node = None):
-		
-		if type(node) != Node and node is not None:
-			raise TypeError('Object passed in must be of type Node')
-
-		self.front = node
-		if node is not None:
-			self.size = 1
-		else:
-			self.size = 0
+	def __init__(self):
+		self.front = None
+		self.tail = None
+		self.size = 0
 
 
 	def __str__(self):
-		
 		current = self.front
 		if self.front is None:
 			return "()"
@@ -32,36 +25,10 @@ class D_linked_list(object):
 			return string
 
 
-	def __iter__(self):
-		self.current = self.front
-		return self
-
-	def next(self):
-
-		if self.current is None:
-			raise StopIteration
-		else:
-			temp = self.current.data
-			self.current = self.current.next
-			return temp
-
-	def __add__(self, other):
-
-		i = self.__iter__()
-		j = other.__iter__()
-		newlist = D_linked_list()
-		for val in i:
-			newlist.append(val)
-		for val in j:
-			newlist.append(val)
-		newlist.size = self.size + other.size
-		return newlist
-
 	def append(self, val):
-
 		current = self.front
 		other = Node(val)
-		
+		self.tail = other
 		if self.front is None:
 			self.front = other
 			self.size += 1
@@ -70,87 +37,87 @@ class D_linked_list(object):
 			while current.next is not None:
 				current = current.next
 			current.next = other
+			other.prev = current
 			self.size += 1
 
 
 	def remove(self, value):
-
-		current = self.front
-		if self.front.data == value:
-			self.front = self.front.next
+		found = False
+		if self.front is None:
+			raise Exception('The value is not present')
 		else:
-			while current.next.data != value and current.next is not None:
-				current = current.next
-			if current.next.data == value:
-				current.next = current.next.next
-				self.size -= 1
-
-	
-	def search(self, value):
-
-		current = self.front
-
-		if self.front.data == value:
-			return self.front
-		while current.next is not None and current.next.data != value:
-			current = current.next
-		if current.next is None:
-			return None
-		else:
-			return current.next
+			if self.front.data == value:
+				self.front = self.front.next
+				self.size -=1
+				if self.front is not None:
+					self.front.prev = None
+					if self.front.next is None:
+						self.tail = self.front
+			else:
+				current = self.front
+				while current.next is not None:
+					if current.next.data == value:
+						found = True
+						current.next = current.next.next
+						if current.next is not None:
+							current.next.prev = current
+						else:
+							self.tail = current
+						self.size -= 1
+						break
+					current = current.next
+				if current.next == None and found == False:
+					raise Exception('The value is not present')
 
 
 	def insert(self, val):
-
 		node = Node(val)
 		node.next = self.front
 		self.front = node
+		if self.front.next is not None:
+			self.front.next.prev = self.front
 		self.size += 1
 
-	def shift(self):
-		current = self.front
 
-		if self.front is None:
+	def shift(self):
+		if self.tail is None:
 			return None
-			
-		if self.front.next is None:
+		else:
+			temp = self.tail
+			current = self.tail.prev
+			if current is not None:
+				current.next = None
+				self.tail = current
+			else:
+				self.front = None
+				self.tail = None
 			self.size -= 1
-			temp = self.front
-			self.front = None
 			return temp.data
 
-		while current.next is not None and current.next.next is not None:
-			current = current.next
-		temp = current.next
-		current.next = None
-		self.size -= 1
-		return temp.data
 
 	def pop(self):
-
-		current = self.front.data
-		self.front = self.front.next
-		self.size -= 1
-		return current
+		if self.front is not None:
+			current = self.front.data
+			self.front = self.front.next
+			if self.front is not None:
+				self.front.prev = None
+			else:
+				self.tail = self.front
+			self.size -= 1
+			return current
+		else:
+			return None
 
 
 	def size(self):
-
 		return self.size
 
+# insert(val) will insert the value 'val' at the head of the list
+# append(val) will append the value 'val' at the tail of the list
+# pop() will pop the first value off the head of the list and return it.
+# shift() will remove the last value from the tail of the list and return it.
+# remove(val) will remove the first instance of 'val' found in the list, starting from the head. If 'val' is not present, it will raise an appropriate Python exception.
 
-	def join(self, other):
-
-		if type(other) != D_linked_list:
-			raise TypeError("Object passed in must be of type Linked_list")
-
-		current = self.front
-
-		while current.next is not None:
-			current = current.next
-
-		current.next = other.front
-		self.size += other.size
 
 
 
