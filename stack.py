@@ -12,7 +12,7 @@ class Stack(object):
 		self.size += 1
 	def pop(self):
 		if self.top is None:
-			raise TypeError("Nothing in the stack")
+			raise Exception('There are no items left in the stack.')
 		self.size -= 1
 		temp = self.top.data
 		self.top = self.top.next
