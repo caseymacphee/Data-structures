@@ -60,4 +60,6 @@ def test_remove():
 	newlist.remove(newnode5)
 	newlist.remove(newnode6)
 	assert str(newlist) == '()'
+	with pytest.raises(Exception):
+		newlist.remove(3)
 

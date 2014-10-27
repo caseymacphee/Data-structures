@@ -55,6 +55,8 @@ class Linked_list(object):
 			current.next = other
 
 	def remove(self, node):
+		if type(node) != Node:
+			raise TypeError("Remove takes a Node object")
 		if self.front is not None:
 			current = self.front
 			value = node.data
