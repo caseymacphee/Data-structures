@@ -1,54 +1,67 @@
 import pytest
 from d_linked_list import *
 
-s = D_linked_list()
+newlist = D_linked_list()
 
 
 def test_insert():
-	
-	s.insert(1)
-	s.insert(2)
-	s.insert(3)
-	s.insert(4)
-	y = str(s)
-	assert y == '(4, 3, 2, 1)'
+	newlist.insert(1)
+	newlist.insert(2)
+	newlist.insert(3)
+	newlist.insert(4)
+	tostring = str(newlist)	
+	assert tostring == '(4, 3, 2, 1)'
 
 def test_pop():
-	x = s.pop()
-	assert x == 4
+	lastin = newlist.pop()
+	assert lastin == 4
+	lastin = newlist.pop()
+	assert lastin == 3
+	newlist.pop()
+	newlist.pop()
+	assert newlist.pop() == None
+	assert newlist.pop() == None
 
 def test_size():
-	assert s.size == 3
-
-def test_search():
-	j = s.search(30)
-	assert j is None
-
-	i = s.search(2)
-	assert i.data == 2
+	newlist.insert(1)
+	newlist.insert(2)
+	newlist.insert(6)
+	assert newlist.size() == 3
+	testlist = D_linked_list()
+	assert testlist.size() == 0
 
 def test_remove():
-	s.insert(4)
-	s.insert(5)
-	s.remove(1)
-	s.remove(3)
-	s.remove(5)
-	assert str(s) == '(4, 2)'
+	newlist.insert(4)
+	newlist.insert(5)
+	newnode1 = Node(1)
+	newnode2 = Node(3)
+	newnode3 = Node(5)
+	newnode4 = Node(6)
+	newlist.remove(newnode2)
+	newlist.remove(newnode3)
+	newlist.remove(newnode4)
+	assert str(newlist) == '(4, 2, 1)'
+	newnode5 = Node(4)
+	newnode6 = Node(2)   
+	newlist.remove(newnode5)
+	newlist.remove(newnode6)
+	newlist.remove(newnode1)
+	assert str(newlist) == '()'
+	with pytest.raises(Exception):
+		newlist.remove(3)
 
 def test_shift():
-	s = D_linked_list()
-	s.insert(5)
-	s.insert(4)
-	s.insert(3)
-	s.insert(2)
-	s.insert(1)
-	end = s.shift()
-	assert end == 5
-	assert s.size == 4
-	s.shift()
-	s.shift()
-	s.shift()
-	s.shift()
-	end = s.shift()
-	assert end is None
-	assert s.size == 0
+	dlist = D_linked_list()
+	dlist.insert(1)
+	dlist.insert(2)
+	dlist.insert(3)
+	dlist.insert(4)
+	dlist.insert(5)
+	last = dlist.shift()
+	assert last == 1
+	dlist.shift()
+	dlist.shift()
+	dlist.shift()
+	dlist.shift()
+	dlist.shift()
+	assert dlist.shift() == None

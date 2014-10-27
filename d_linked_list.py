@@ -6,7 +6,7 @@ class D_linked_list(object):
 	def __init__(self):
 		self.front = None
 		self.tail = None
-		self.size = 0
+		self.currentsize = 0
 
 
 	def __str__(self):
@@ -31,24 +31,27 @@ class D_linked_list(object):
 		self.tail = other
 		if self.front is None:
 			self.front = other
-			self.size += 1
+			self.currentsize += 1
 
 		else:
 			while current.next is not None:
 				current = current.next
 			current.next = other
 			other.prev = current
-			self.size += 1
+			self.currentsize += 1
 
 
-	def remove(self, value):
+	def remove(self, node):
+		if type(node) != Node:
+			raise Exception('Method takes only objects of type Node')
 		found = False
+		value = node.data
 		if self.front is None:
-			raise Exception('The value is not present')
+			return None
 		else:
 			if self.front.data == value:
 				self.front = self.front.next
-				self.size -=1
+				self.currentsize -=1
 				if self.front is not None:
 					self.front.prev = None
 					if self.front.next is None:
@@ -63,20 +66,22 @@ class D_linked_list(object):
 							current.next.prev = current
 						else:
 							self.tail = current
-						self.size -= 1
+						self.currentsize -= 1
 						break
 					current = current.next
 				if current.next == None and found == False:
-					raise Exception('The value is not present')
+					return None
 
 
 	def insert(self, val):
 		node = Node(val)
 		node.next = self.front
+		if self.front is None:
+			self.tail = node
 		self.front = node
 		if self.front.next is not None:
 			self.front.next.prev = self.front
-		self.size += 1
+		self.currentsize += 1
 
 
 	def shift(self):
@@ -91,7 +96,7 @@ class D_linked_list(object):
 			else:
 				self.front = None
 				self.tail = None
-			self.size -= 1
+			self.currentsize -= 1
 			return temp.data
 
 
@@ -103,14 +108,14 @@ class D_linked_list(object):
 				self.front.prev = None
 			else:
 				self.tail = self.front
-			self.size -= 1
+			self.currentsize -= 1
 			return current
 		else:
 			return None
 
 
 	def size(self):
-		return self.size
+		return self.currentsize
 
 # insert(val) will insert the value 'val' at the head of the list
 # append(val) will append the value 'val' at the tail of the list
