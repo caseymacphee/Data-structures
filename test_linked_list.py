@@ -46,12 +46,18 @@ def test_search():
 def test_remove():
 	newlist.insert(4)
 	newlist.insert(5)
-	newlist.remove(1)
-	newlist.remove(3)
-	newlist.remove(5)
-	newlist.remove(6)
+	newnode1 = Node(1)
+	newnode2 = Node(3)
+	newnode3 = Node(5)
+	newnode4 = Node(6)
+	newlist.remove(newnode1)
+	newlist.remove(newnode2)
+	newlist.remove(newnode3)
+	newlist.remove(newnode4)
 	assert str(newlist) == '(4, 2)'
-	newlist.remove(4)
-	newlist.remove(2)
+	newnode5 = Node(4)
+	newnode6 = Node(2)   
+	newlist.remove(newnode5)
+	newlist.remove(newnode6)
 	assert str(newlist) == '()'
 

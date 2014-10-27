@@ -54,9 +54,10 @@ class Linked_list(object):
 				current = current.next
 			current.next = other
 
-	def remove(self, value):
+	def remove(self, node):
 		if self.front is not None:
 			current = self.front
+			value = node.data
 			if self.front.data == value:
 				self.front = self.front.next
 				self.currentsize -= 1
