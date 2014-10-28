@@ -2,12 +2,10 @@ from node import Node
 
 class D_linked_list(object):
 
-
 	def __init__(self):
 		self.front = None
 		self.tail = None
 		self.currentsize = 0
-
 
 	def __str__(self):
 		current = self.front
@@ -24,7 +22,6 @@ class D_linked_list(object):
 			string += ")"
 			return string
 
-
 	def append(self, val):
 		current = self.front
 		other = Node(val)
@@ -32,14 +29,12 @@ class D_linked_list(object):
 		if self.front is None:
 			self.front = other
 			self.currentsize += 1
-
 		else:
 			while current.next is not None:
 				current = current.next
 			current.next = other
 			other.prev = current
 			self.currentsize += 1
-
 
 	def remove(self, node):
 		if type(node) != Node:
@@ -72,7 +67,6 @@ class D_linked_list(object):
 				if current.next == None and found == False:
 					return None
 
-
 	def insert(self, val):
 		node = Node(val)
 		node.next = self.front
@@ -82,7 +76,6 @@ class D_linked_list(object):
 		if self.front.next is not None:
 			self.front.next.prev = self.front
 		self.currentsize += 1
-
 
 	def shift(self):
 		if self.tail is None:
@@ -99,7 +92,6 @@ class D_linked_list(object):
 			self.currentsize -= 1
 			return temp.data
 
-
 	def pop(self):
 		if self.front is not None:
 			current = self.front.data
@@ -113,17 +105,8 @@ class D_linked_list(object):
 		else:
 			return None
 
-
 	def size(self):
 		return self.currentsize
-
-# insert(val) will insert the value 'val' at the head of the list
-# append(val) will append the value 'val' at the tail of the list
-# pop() will pop the first value off the head of the list and return it.
-# shift() will remove the last value from the tail of the list and return it.
-# remove(val) will remove the first instance of 'val' found in the list, starting from the head. If 'val' is not present, it will raise an appropriate Python exception.
-
-
 
 
 
