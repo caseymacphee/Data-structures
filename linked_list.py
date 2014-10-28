@@ -3,7 +3,7 @@ from node import Node
 class Linked_list(object):
 	def __init__(self):
 		self.front = None
-		self.currentsize = 0
+		self.current_size = 0
 
 	def __str__(self):
 		current = self.front
@@ -12,13 +12,13 @@ class Linked_list(object):
 		elif self.front.next is None:
 			return "(" + str(self.front.data) + ")"
 		else:	
-			string = "("
-			string += str(current.data)
+			to_string = "("
+			to_string += str(current.data)
 			while current.next is not None:
-				string +=  ", " + str(current.next.data)
+				to_string +=  ", " + str(current.next.data)
 				current = current.next
-			string += ")"
-			return string
+			to_string += ")"
+			return to_string
 
 	def __iter__(self):
 		self.current = self.front
@@ -33,20 +33,20 @@ class Linked_list(object):
 			return temp
 
 	def __add__(self, other):
-		i = self.__iter__()
-		j = other.__iter__()
-		newlist = Linked_list()
-		for val in i:
-			newlist.append(val)
-		for val in j:
-			newlist.append(val)
-		newlist.currentsize = self.currentsize + other.currentsize
-		return newlist
+		first_list_itr = self.__iter__()
+		second_list_itr = other.__iter__()
+		new_list = Linked_list()
+		for val in first_list_itr:
+			new_list.append(val)
+		for val in second_list_itr:
+			new_list.append(val)
+		new_list.current_size = self.current_size + other.current_size
+		return new_list
 
 	def append(self, val):
 		current = self.front
 		other = Node(val)
-		self.currentsize += 1
+		self.current_size += 1
 		if self.front is None:
 			self.front = other
 		else:
@@ -62,14 +62,14 @@ class Linked_list(object):
 			value = node.data
 			if self.front.data == value:
 				self.front = self.front.next
-				self.currentsize -= 1
+				self.current_size -= 1
 			else:
 				while current.next is not None:
 					prev = current
 					current = current.next
 					if current.data == value:
 						prev.next = current.next
-						self.currentsize -=1
+						self.current_size -=1
 
 	def search(self, value):
 		if self.front is None:
@@ -84,21 +84,21 @@ class Linked_list(object):
 		return None
 
 	def insert(self, val):
-		node = Node(val)
-		node.next = self.front
-		self.front = node
-		self.currentsize += 1
+		new_node = Node(val)
+		new_node.next = self.front
+		self.front = new_node
+		self.current_size += 1
 
 	def pop(self):
 		if self.front is None:
 			return None
 		current = self.front.data
 		self.front = self.front.next
-		self.currentsize -= 1
+		self.current_size -= 1
 		return current
 
 	def size(self):
-		return self.currentsize
+		return self.current_size
 
 	def join(self, other):
 		if type(other) != Linked_list:
@@ -107,6 +107,6 @@ class Linked_list(object):
 		while current.next is not None:
 			current = current.next
 		current.next = other.front
-		self.currentsize += other.currentsize
+		self.current_size += other.current_size
 
 

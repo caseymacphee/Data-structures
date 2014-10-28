@@ -3,56 +3,56 @@ from node import Node
 class D_linked_list(object):
 
 	def __init__(self):
-		self.front = None
+		self.head = None
 		self.tail = None
-		self.currentsize = 0
+		self.current_size = 0
 
 	def __str__(self):
-		current = self.front
-		if self.front is None:
+		current = self.head
+		if self.head is None:
 			return "()"
-		elif self.front.next is None:
-			return "(" + str(self.front.data) + ")"
+		elif self.head.next is None:
+			return "(" + str(self.head.data) + ")"
 		else:	
-			string = "("
-			string += str(current.data)
+			to_string = "("
+			to_string += str(current.data)
 			while current.next is not None:
-				string +=  ", " + str(current.next.data)
+				to_string +=  ", " + str(current.next.data)
 				current = current.next
-			string += ")"
-			return string
+			to_string += ")"
+			return to_string
 
 	def append(self, val):
-		current = self.front
-		other = Node(val)
-		self.tail = other
-		if self.front is None:
-			self.front = other
-			self.currentsize += 1
+		current = self.head
+		new_node = Node(val)
+		self.tail = new_node
+		if self.head is None:
+			self.head = new_node
+			self.current_size += 1
 		else:
 			while current.next is not None:
 				current = current.next
-			current.next = other
-			other.prev = current
-			self.currentsize += 1
+			current.next = new_node
+			new_node.prev = current
+			self.current_size += 1
 
 	def remove(self, node):
 		if type(node) != Node:
 			raise Exception('Method takes only objects of type Node')
 		found = False
 		value = node.data
-		if self.front is None:
+		if self.head is None:
 			return None
 		else:
-			if self.front.data == value:
-				self.front = self.front.next
-				self.currentsize -=1
-				if self.front is not None:
-					self.front.prev = None
-					if self.front.next is None:
-						self.tail = self.front
+			if self.head.data == value:
+				self.head = self.head.next
+				self.current_size -=1
+				if self.head is not None:
+					self.head.prev = None
+					if self.head.next is None:
+						self.tail = self.head
 			else:
-				current = self.front
+				current = self.head
 				while current.next is not None:
 					if current.next.data == value:
 						found = True
@@ -61,7 +61,7 @@ class D_linked_list(object):
 							current.next.prev = current
 						else:
 							self.tail = current
-						self.currentsize -= 1
+						self.current_size -= 1
 						break
 					current = current.next
 				if current.next == None and found == False:
@@ -69,13 +69,13 @@ class D_linked_list(object):
 
 	def insert(self, val):
 		node = Node(val)
-		node.next = self.front
-		if self.front is None:
+		node.next = self.head
+		if self.head is None:
 			self.tail = node
-		self.front = node
-		if self.front.next is not None:
-			self.front.next.prev = self.front
-		self.currentsize += 1
+		self.head = node
+		if self.head.next is not None:
+			self.head.next.prev = self.head
+		self.current_size += 1
 
 	def shift(self):
 		if self.tail is None:
@@ -87,26 +87,26 @@ class D_linked_list(object):
 				current.next = None
 				self.tail = current
 			else:
-				self.front = None
+				self.head = None
 				self.tail = None
-			self.currentsize -= 1
+			self.current_size -= 1
 			return temp.data
 
 	def pop(self):
-		if self.front is not None:
-			current = self.front.data
-			self.front = self.front.next
-			if self.front is not None:
-				self.front.prev = None
+		if self.head is not None:
+			current = self.head.data
+			self.head = self.head.next
+			if self.head is not None:
+				self.head.prev = None
 			else:
-				self.tail = self.front
-			self.currentsize -= 1
+				self.tail = self.head
+			self.current_size -= 1
 			return current
 		else:
 			return None
 
 	def size(self):
-		return self.currentsize
+		return self.current_size
 
 
 

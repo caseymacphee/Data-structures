@@ -3,44 +3,47 @@ import pytest
 from queue import *
 
 def test_enqueue():
-	newq = Queue()
-	newq.enqueue(1)
-	newq.enqueue(2)
-	newq.enqueue(3)
-	newq.enqueue(4)
-	newq.enqueue(5)
-	assert newq.head.data == 5
+	new_q = Queue()
+	new_q.enqueue(1)
+	new_q.enqueue(2)
+	new_q.enqueue(3)
+	new_q.enqueue(4)
+	new_q.enqueue(5)
+	assert new_q.head.data == 5
 
 def test_dequeue():
-	newq = Queue()
-	newq.enqueue(1)
-	newq.enqueue(2)
-	newq.enqueue(3)
-	newq.enqueue(4)
-	newq.enqueue(5)
-	val = newq.dequeue()
+	new_q = Queue()
+	new_q.enqueue(1)
+	new_q.enqueue(2)
+	new_q.enqueue(3)
+	new_q.enqueue(4)
+	new_q.enqueue(5)
+	val = new_q.dequeue()
 	assert val == 1
-	val = newq.dequeue()
+	val = new_q.dequeue()
 	assert val == 2
-	val = newq.dequeue()
+	val = new_q.dequeue()
 	assert val == 3
-	val = newq.dequeue()
+	val = new_q.dequeue()
 	assert val == 4
-	val = newq.dequeue()
+	val = new_q.dequeue()
 	assert val == 5
+	with pytest.raises(Exception):
+		fail_q = Queue()
+		fail_q.dequeue()
 
 def test_size():
-	newq = Queue()
-	newq.enqueue(1)
-	newq.enqueue(2)
-	newq.enqueue(3)
-	newq.enqueue(4)
-	newq.enqueue(5)
-	assert newq.size == 5
-	newq.dequeue()
-	newq.dequeue()
-	assert newq.size == 3
-	newq.dequeue()
-	newq.dequeue()
-	newq.dequeue()
-	assert newq.size == 0
+	new_q = Queue()
+	new_q.enqueue(1)
+	new_q.enqueue(2)
+	new_q.enqueue(3)
+	new_q.enqueue(4)
+	new_q.enqueue(5)
+	assert new_q.size() == 5
+	new_q.dequeue()
+	new_q.dequeue()
+	assert new_q.size() == 3
+	new_q.dequeue()
+	new_q.dequeue()
+	new_q.dequeue()
+	assert new_q.size() == 0

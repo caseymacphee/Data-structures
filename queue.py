@@ -3,34 +3,37 @@ from node import Node
 class Queue:
 	def __init__(self):
 		self.head = None
-		self.size = 0
+		self.current_size = 0
 
 	def dequeue(self):
 		if self.head is None:
-			raise ValueError
+			raise ValueError('Nothing to dequeue')
 		elif self.head.next is None:
-			dequeued = self.head
+			first_in = self.head
 			self.head = None
-			self.size -=1
-			return dequeued.data
+			self.current_size -=1
+			return first_in.data
 		else:
 			current = self.head
 			while current.next is not None and current.next.next is not None:
 				current = current.next
 			self.tail = current
-			dequeued = current.next
+			first_in = current.next
 			current.next = None
-			self.size -= 1
-			return dequeued.data
+			self.current_size -= 1
+			return first_in.data
 	
 	def enqueue(self, val):
-		enqueued = Node(val)
-		self.size += 1
+		new_node = Node(val)
+		self.current_size += 1
 		if self.head is None:
-			self.head = enqueued
+			self.head = new_node
 		else:
-			enqueued.next = self.head
-			self.head = enqueued
+			new_node.next = self.head
+			self.head = new_node
+
+	def size(self):
+		return self.current_size
 
 
 
