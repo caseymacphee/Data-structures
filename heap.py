@@ -1,58 +1,70 @@
-class heap(object):
+class Min_heap(object):
 
-	def __init__(self):
-		self.heap = []
-		self.heap.insert(0, None)
+	def __init__(self, iterable = None):
+		self.pile = []
+		self.pile.insert(0, None)
+		if iterable is not None:
+			try:
+				populate_iterable = iter(iterable)
+				try:
+					iterate = True
+					while iterate:
+						self.push(populate_iterable.next())
+				except StopIteration:
+					print "Min heap populated"
+			except:
+				raise Exception("Object must be iterable to populate min heap")	
 
 	def push(self, val):
-		self.heap.append(val)
-		index = len(self.heap) + 1
-		while val < self.heap[index/2] and self.heap[index/2] is not None:
-			print index
-			swap = self.heap[index/2]
-			self.heap[index] = swap
-			self.heap[index/2] = val
+		if val is None:
+			raise Exception('None type is not sortable')
+		self.pile.append(val)
+		index = len(self.pile) - 1
+		while val < self.pile[index/2] and self.pile[index/2] is not None:
+			swap = self.pile[index/2]
+			self.pile[index] = swap
+			self.pile[index/2] = val
 			index = index/2
 
 	def pop(self):
-		if len(self.heap) == 1:
+		if len(self.pile) == 1:
 			return None
+		elif len(self.pile) == 2:
+			return self.pile.pop()
 		else:
-			max = self.heap[1]
-			lastelement = self.heap.pop()
-			self.heap[1] = lastelement
-		index = 1
-		while self.heap[index] < self.heap[index*2] or self.heap[index] < self.heap[index*2 +1]:
-			current = self.heap[index]
-			if self.heap[index*2] > self.heap[index*2 + 1]:
-				self.heap[index] = self.heap[index*2]
-				self.heap[index*2] = current
-				index = index * 2
-			else:
-				self.heap[index] = self.heap[index*2 + 1]
-				self.heap[index*2 + 1] = current
-				index = (index * 2) + 1
+			min = self.pile[1]
+			lastelement = self.pile.pop()
+			self.pile[1] = lastelement
+			index = 1
+			while (index * 2) < len(self.pile):
+				current = self.pile[index]
+				if len(self.pile) > (index * 2) + 1: 
+					if self.pile[index] > self.pile[index * 2]:
+						if self.pile[index*2] < self.pile[index*2 + 1]:
+							self.pile[index] = self.pile[index*2]
+							self.pile[index*2] = current
+							index = index * 2
+						else:
+							self.pile[index] = self.pile[index*2 + 1]
+							self.pile[index*2 + 1] = current
+							index = (index * 2) + 1
+				elif self.pile[index] > self.pile[index * 2]:
+						self.pile[index] = self.pile[index*2]
+						self.pile[index*2] = current
+						index = index * 2
+			return min
 
-		return max
+# For an additional challenge, implement f.pile that can be either and allow the choice to be made at initialization time.
 
+# Youf.pile should support the following public operations:
 
-
-
-
-
-
-
-# For an additional challenge, implement a heap that can be either and allow the choice to be made at initialization time.
-
-# Your heap should support the following public operations:
-
-# .push(): puts a new value into the heap, maintaining the heap property.
-# .pop(): removes the "top" value in the heap, maintaining the heap property.
+# .push(): puts a new value into thf.pile, maintaining thf.pile property.
+# .pop(): removes the "top" value in thf.pile, maintaining thf.pile property.
 # You will need to implement some private api in order to support those operations.
 
-# The constructor for your heap should default to creating an empty heap, but allow for creating a populated given an iterable as an input.
+# The constructor for youf.pile should default to creating an emptf.pile, but allow for creating a populated given an iterable as an input.
 
-# For each feature of your heap, start by writing tests to demonstrate that feature.  Then implement the code to pass the tests.
+# For each feature of youf.pile, start by writing tests to demonstrate that feature.  Then implement the code to pass the tests.
 
 # Update your README with information about your implementation of the Binary Heap data type.  Include all references and collaborations.  
 
