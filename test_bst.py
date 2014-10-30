@@ -49,7 +49,7 @@ def test_depth():
 	newtree.insert(1)
 	assert newtree.depth() == 1
 
-def test_depth():
+def test_balance():
 	newtree = Binary_search_tree()
 	assert newtree.balance() == 0
 	newtree.insert(5)
@@ -62,3 +62,85 @@ def test_depth():
 	assert newtree.balance() == -1
 	newtree.insert(8)
 	assert newtree.balance() == -2
+
+def test_traversal():
+	newtree = Binary_search_tree()
+	newtree.insert(9)
+	newtree.insert(11)
+	newtree.insert(2)
+	newtree.insert(8)
+	newtree.insert(6)
+	newtree.insert(1)
+	newtree.insert(-10)
+	newtree.insert(4)
+
+	pre_order_gen = newtree.pre_order()
+	assert pre_order_gen.next() == 9
+	assert pre_order_gen.next() == 2
+	assert pre_order_gen.next() == 1
+	assert pre_order_gen.next() == -10
+	assert pre_order_gen.next() == 8
+	assert pre_order_gen.next() == 6
+	assert pre_order_gen.next() == 4
+	assert pre_order_gen.next() == 11
+	with pytest.raises(Exception):
+		pre_order_gen.next()
+
+	in_order_gen = newtree.in_order()
+	assert in_order_gen.next() == -10
+	assert in_order_gen.next() == 1
+	assert in_order_gen.next() == 2
+	assert in_order_gen.next() == 4
+	assert in_order_gen.next() == 6
+	assert in_order_gen.next() == 8
+	assert in_order_gen.next() == 9
+	assert in_order_gen.next() == 11
+	with pytest.raises(Exception):
+		in_order_gen.next()
+
+	post_order_gen = newtree.post_order()
+	assert post_order_gen.next() == -10
+	assert post_order_gen.next() == 1
+	assert post_order_gen.next() == 4
+	assert post_order_gen.next() == 6
+	assert post_order_gen.next() == 8
+	assert post_order_gen.next() == 2
+	assert post_order_gen.next() == 11
+	assert post_order_gen.next() == 9
+	with pytest.raises(Exception):
+		post_order_gen.next()
+
+	breadth_first_gen = newtree.breadth_first()
+	assert breadth_first_gen.next() == 9
+	assert breadth_first_gen.next() == 2
+	assert breadth_first_gen.next() == 11
+	assert breadth_first_gen.next() == 1
+	assert breadth_first_gen.next() == 8
+	assert breadth_first_gen.next() == -10
+	assert breadth_first_gen.next() == 6
+	assert breadth_first_gen.next() == 4
+	with pytest.raises(Exception):
+		breadth_first_gen.next()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
