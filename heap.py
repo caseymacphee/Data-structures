@@ -46,16 +46,12 @@ class Min_heap(object):
 				current = self._pile[index]
 				if (index * 2) + 1 < len(self._pile): 
 					if self._pile[index] > self._pile[index*2]:
-						##greater than * 2, is * 2 + 1 less than both?
 						if self._pile[index] > self._pile[index*2 + 1]:
-							## also greater than *2 + 1
 							if self._pile[index * 2] > self._pile[index * 2 + 1]:
-								## * 2 + 1 is lesser, switch with that
 								self._pile[index] = self._pile[index*2 + 1]
 								self._pile[index*2 + 1] = current
 								index = index * 2 + 1
 							else:
-								## *2 is lesser switch with that
 								self._pile[index] = self._pile[index * 2]
 								self._pile[index * 2] = current
 								index = index * 2
@@ -64,14 +60,12 @@ class Min_heap(object):
 							self._pile[index*2] = current
 							index = index * 2
 					elif self._pile[index] > self._pile[index * 2 + 1]:
-						# not greater than * 2
 						self._pile[index] = self._pile[index*2 + 1]
 						self._pile[index*2 + 1] = current
 						index = (index * 2) + 1
 					else:
 						break
 				else:
-					## can only test *2	
 					if self._pile[index] > self._pile[index * 2]:
 						self._pile[index] = self._pile[index*2]
 						self._pile[index*2] = current
@@ -79,5 +73,6 @@ class Min_heap(object):
 					else:
 						break
 			return min
+			
 	def size(self):
 		return self.current_size
