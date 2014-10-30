@@ -1,8 +1,9 @@
 class Min_heap(object):
 
 	def __init__(self, iterable = None):
-		self.pile = []
-		self.pile.insert(0, None)
+		self._pile = []
+		self._pile.insert(0, None)
+		self.current_size = 0
 		if iterable is not None:
 			try:
 				populate_iterable = iter(iterable)
@@ -18,53 +19,45 @@ class Min_heap(object):
 	def push(self, val):
 		if val is None:
 			raise Exception('None type is not sortable')
-		self.pile.append(val)
-		index = len(self.pile) - 1
-		while val < self.pile[index/2] and self.pile[index/2] is not None:
-			swap = self.pile[index/2]
-			self.pile[index] = swap
-			self.pile[index/2] = val
+		if '__cmp__' not in dir(val):
+			raise Exception('Object must be comparable')
+		self.current_size += 1
+		self._pile.append(val)
+		index = len(self._pile) - 1
+		while val < self._pile[index/2] and self._pile[index/2] is not None:
+			swap = self._pile[index/2]
+			self._pile[index] = swap
+			self._pile[index/2] = val
 			index = index/2
 
 	def pop(self):
-		if len(self.pile) == 1:
+		if len(self._pile) == 1:
 			return None
-		elif len(self.pile) == 2:
-			return self.pile.pop()
+		elif len(self._pile) == 2:
+			self.current_size -= 1
+			return self._pile.pop()
 		else:
-			min = self.pile[1]
-			lastelement = self.pile.pop()
-			self.pile[1] = lastelement
+			self.current_size -= 1
+			min = self._pile[1]
+			lastelement = self._pile.pop()
+			self._pile[1] = lastelement
 			index = 1
-			while (index * 2) < len(self.pile):
-				current = self.pile[index]
-				if len(self.pile) > (index * 2) + 1: 
-					if self.pile[index] > self.pile[index * 2]:
-						if self.pile[index*2] < self.pile[index*2 + 1]:
-							self.pile[index] = self.pile[index*2]
-							self.pile[index*2] = current
+			while (index * 2) < len(self._pile):
+				current = self._pile[index]
+				if len(self._pile) > (index * 2) + 1: 
+					if self._pile[index] > self._pile[index * 2]:
+						if self._pile[index*2] < self._pile[index*2 + 1]:
+							self._pile[index] = self._pile[index*2]
+							self._pile[index*2] = current
 							index = index * 2
 						else:
-							self.pile[index] = self.pile[index*2 + 1]
-							self.pile[index*2 + 1] = current
+							self._pile[index] = self._pile[index*2 + 1]
+							self._pile[index*2 + 1] = current
 							index = (index * 2) + 1
-				elif self.pile[index] > self.pile[index * 2]:
-						self.pile[index] = self.pile[index*2]
-						self.pile[index*2] = current
+				elif self._pile[index] > self._pile[index * 2]:
+						self._pile[index] = self._pile[index*2]
+						self._pile[index*2] = current
 						index = index * 2
 			return min
-
-# For an additional challenge, implement f.pile that can be either and allow the choice to be made at initialization time.
-
-# Youf.pile should support the following public operations:
-
-# .push(): puts a new value into thf.pile, maintaining thf.pile property.
-# .pop(): removes the "top" value in thf.pile, maintaining thf.pile property.
-# You will need to implement some private api in order to support those operations.
-
-# The constructor for youf.pile should default to creating an emptf.pile, but allow for creating a populated given an iterable as an input.
-
-# For each feature of youf.pile, start by writing tests to demonstrate that feature.  Then implement the code to pass the tests.
-
-# Update your README with information about your implementation of the Binary Heap data type.  Include all references and collaborations.  
-
+	def size(self):
+		return self.current_size
