@@ -1,16 +1,18 @@
 class Vertice(object):
  	def __init__(self, data = None):
  		self.data = data
+ 		self.visited = False
  	def __str__(self):
  		return str(self.data)
 
 class Edge(object):
-	def __init__(self, n1, n2):
+	def __init__(self, n1, n2, weight = None):
 		self.edge_properties = []
+		self.weight = weight
 		self.vert1 = n1
 		self.vert2 = n2
 	def __str__(self):
-		return '({}, {})'.format(str(self.vert1.data), str(self.vert2.data))
+		return '({}, {}, {})'.format(str(self.vert1.data), str(self.vert2.data), str(self.weight))
 
 class Graph(object):
 	def __init__(self):
@@ -24,10 +26,10 @@ class Graph(object):
 		new_node = Vertice(n)
 		self.nodes.append(new_node)
 
-	def add_edge(self, n1, n2):
+	def add_edge(self, n1, n2, weight = None):
 		new_node1 = Vertice(n1)
 		new_node2 = Vertice(n2)
-		new_edge = Edge(new_node1, new_node2)
+		new_edge = Edge(new_node1, new_node2, weight)
 		self.edges.append(new_edge)
 		found = False
 		for vertice in self.nodes:
