@@ -68,6 +68,7 @@ def test_neighbors():
 	new_graph.add_edge('Wind', 'Fire')
 	new_graph.add_edge('Water', 'Earth')
 	wind_neighbors = new_graph.neighbors('Wind')
+	wind_neighbors = [str(node) for node in wind_neighbors]
 	assert 'Earth' in wind_neighbors and 'Fire' in wind_neighbors
 	assert 'Water' not in wind_neighbors
 
@@ -94,3 +95,52 @@ def test_weight():
 	assert new_graph.edges[3].weight == 2
 	new_graph.add_edge('Cowboy', 'Rocker')
 	assert new_graph.edges[4].weight == None
+
+def test_depth():
+	new_graph = Graph()
+	new_graph.add_edge('A', 'B')
+	new_graph.add_edge('B', 'E')
+	new_graph.add_edge('D', 'E')
+	new_graph.add_edge('C', 'E')
+	new_graph.add_edge('G', 'E')
+	new_graph.add_edge('C', 'D')
+	new_graph.add_edge('C', 'G')
+	new_graph.add_edge('D', 'G')
+	new_graph.add_node('F')
+	path = new_graph.depth_traversal('A')
+	assert path == ['A', 'B', 'E', 'D', 'C', 'G']
+	path = new_graph.depth_traversal('B')
+	assert path == ['B', 'A', 'E', 'D', 'C', 'G']
+	path = new_graph.depth_traversal('C')
+	assert path == ['C', 'E', 'B', 'A', 'D', 'G']
+	path = new_graph.depth_traversal('G')
+	assert path == ['G', 'E', 'B', 'A', 'D', 'C']
+	path = new_graph.depth_traversal('F')
+	assert path == ['F']
+	with pytest.raises(Exception):
+		path = new_graph.depth_traversal('Q')
+	with pytest.raises(Exception):
+		path = new_graph.depth_traversal(None)
+
+def test_breadth():
+	new_graph = Graph()
+	new_graph.add_edge('A', 'B')
+	new_graph.add_edge('B', 'E')
+	new_graph.add_edge('D', 'E')
+	new_graph.add_edge('C', 'E')
+	new_graph.add_edge('G', 'E')
+	new_graph.add_edge('C', 'D')
+	new_graph.add_edge('C', 'G')
+	new_graph.add_edge('D', 'G')
+	new_graph.add_node('F')
+	path = new_graph.breadth_traversal('A')
+	assert path == ['A', 'B', 'E', 'D', 'C', 'G']
+	path = new_graph.breadth_traversal('B')
+	assert path == ['B', 'A', 'E', 'D', 'C', 'G']
+	path = new_graph.breadth_traversal('D')
+	assert path == ['D', 'E', 'C', 'G', 'B', 'A']
+	with pytest.raises(Exception):
+		new_graph.breadth_traversal('Q')
+	with pytest.raises(Exception):
+		vert1 = Vertice('None')
+		new_graph.breadth_traversal(vert1)

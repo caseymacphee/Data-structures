@@ -1,7 +1,11 @@
+from queue import Queue
+
 class Vertice(object):
  	def __init__(self, data = None):
  		self.data = data
  		self.visited = False
+ 		self.directed = False
+
  	def __str__(self):
  		return str(self.data)
 
@@ -27,22 +31,28 @@ class Graph(object):
 		self.nodes.append(new_node)
 
 	def add_edge(self, n1, n2, weight = None):
-		new_node1 = Vertice(n1)
-		new_node2 = Vertice(n2)
-		new_edge = Edge(new_node1, new_node2, weight)
-		self.edges.append(new_edge)
 		found = False
 		for vertice in self.nodes:
 			if vertice.data == n1:
 				found = True
+				node1 = vertice
 		if not found:
-			self.nodes.append(new_node1)
+			node1 = Vertice(n1)
+			self.nodes.append(node1)
 		found = False
 		for vertice in self.nodes:
 			if vertice.data == n2:
 				found = True
+				node2 = vertice
 		if not found:
-			self.nodes.append(new_node2)
+			node2 = Vertice(n2)
+			self.nodes.append(node2)
+		for edge in self.edges:
+			if edge.vert1.data == n1 and edge.vert2.data == n2:
+				raise Exception('Cannot duplicate edges')
+		new_edge = Edge(node1, node2, weight)
+		self.edges.append(new_edge)
+		
 
 	def del_node(self, n):
 		found = False
@@ -76,17 +86,89 @@ class Graph(object):
 		neighbor_list = []
 		for edge in self.edges:
 			if edge.vert1.data == n:
-				neighbor_list.append(edge.vert2.data)
+				neighbor_list.append(edge.vert2)
 			if edge.vert2.data == n:
-				neighbor_list.append(edge.vert1.data)
+				neighbor_list.append(edge.vert1)
 		return neighbor_list
 
 	def adjacent(self, n1, n2):
 		n1_neighbors = self.neighbors(n1)
-		if n2 in n1_neighbors:
-			return True
+		for node in n1_neighbors:
+			if node.data == n2:
+				return True
+		return False
+
+	def depth_traversal(self, n):
+		found = False
+		visited_path = []
+		for node in self.nodes:
+			node.visited = False
+			if node.data == n:
+				found = True
+				start_node = node
+		if found:
+			self._depth_traversal(start_node, visited_path)
+			return visited_path
 		else:
-			return False
+			raise Exception("That node doesn't appear to be in the graph")
+
+	def _depth_traversal(self, n, path):
+		n.visited = True
+		path.append(n.data)
+		for node in self.neighbors(n.data):
+			if node.visited == False:
+				self._depth_traversal(node, path)
+
+	def breadth_traversal(self, n):
+		found = False
+		path = []
+		for node in self.nodes:
+			node.visited = False
+			if node.data == n:
+				found = True
+				start_node = node
+		if not found:
+			raise Exception("That node doesn't appear to be in the graph")
+		else:
+			queue = Queue()
+			start_node.visited = True
+			path.append(start_node.data)
+			queue.enqueue(start_node)
+			while queue.size > 0:
+				first_in = queue.dequeue()
+				for node in self.neighbors(first_in.data):
+					if node.visited == False:
+						path.append(node.data)
+						node.visited = True
+						queue.enqueue(node)
+		return path
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
