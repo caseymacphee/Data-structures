@@ -144,3 +144,31 @@ def test_breadth():
 	with pytest.raises(Exception):
 		vert1 = Vertice('None')
 		new_graph.breadth_traversal(vert1)
+
+def test_dijstra():
+	graph = Graph()
+	graph.add_edge('A', 'B', 1)
+	graph.add_edge('E', 'B', 1)
+	graph.add_edge('E', 'D', 1)
+	graph.add_edge('E', 'C', 2)
+	graph.add_edge('E', 'G', 3)
+	graph.add_edge('D', 'G', 1)
+	graph.add_edge('C', 'D', 1)
+	graph.add_edge('G', 'C', 1)
+	graph.add_edge('G', 'H', 2)
+	graph.add_edge('H', 'A', 1)
+	graph.add_node('F')
+	answer = graph.dijkstra_algorithm('A', 'G')
+	assert answer.next() == (3, ['A', 'H', 'G'])
+	answer = graph.dijkstra_algorithm('A', 'C')
+	assert answer.next() == (4, ['A', 'B', 'E', 'C'])
+	assert answer.next() == (4, ['A', 'B', 'E', 'D', 'C'])
+	assert answer.next() == (4, ['A', 'H', 'G', 'C'])
+
+
+
+
+
+
+
+

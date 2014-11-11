@@ -43,6 +43,7 @@ class Binary_search_tree(object):
 						break
 					else:
 						current = current.left
+
 	def contains(self, val):
 		if self.root is None:
 			return False
@@ -135,6 +136,44 @@ class Binary_search_tree(object):
 			if last_out.right is not None:
 				breadth_q.enqueue(last_out.right)
 		return (item for item in breadth_first_list)
+
+	def adjust_balance(self):
+		current_balance = self.balance()
+		while current_balance > 1 or current_balance < -1:
+			if current_balance < -1:
+				temp = self.root
+				self.root = self.root.right
+				temp.right = None
+				self._recombine(temp)
+			elif current_balance > 1:
+				temp = self.root
+				self.root = self.root.left
+				temp.left = None
+				self._recombine(temp)
+			current_balance = self.balance()
+
+	def _recombine(self, node):
+		val = node.data
+		current = self.root
+		while True:
+			if current.data > val:
+				if current.left is None:
+					current.left = node 
+					break
+				else:
+					current = current.left
+			elif current.data < val:
+				if current.right is None:
+					current.right = node
+					break
+				else:
+					current = current.right
+			else:
+				if current.left is None:
+					current.right = node
+					break
+				else:
+						current = current.left	
 
 
 

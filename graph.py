@@ -1,4 +1,5 @@
-from queue import Queue
+from Queue import Queue
+from Queue import PriorityQueue
 
 class Vertice(object):
  	def __init__(self, data = None):
@@ -29,6 +30,19 @@ class Graph(object):
 	def add_node(self, n):
 		new_node = Vertice(n)
 		self.nodes.append(new_node)
+
+	def return_node(self, n):
+		for node in self.nodes:
+			if node.data == n:
+				return node
+
+	def edge_weight(self, n1, n2):
+		for edge in self.edges:
+			if edge.vert1.data == n1 and edge.vert2.data == n2:
+				return edge.weight
+			if edge.vert1.data == n2 and edge.vert2.data == n1:
+				return edge.weight
+		return None
 
 	def add_edge(self, n1, n2, weight = None):
 		found = False
@@ -133,38 +147,54 @@ class Graph(object):
 			queue = Queue()
 			start_node.visited = True
 			path.append(start_node.data)
-			queue.enqueue(start_node)
-			while queue.size > 0:
-				first_in = queue.dequeue()
+			queue.put(start_node)
+			while queue.qsize() > 0:
+				first_in = queue.get()
 				for node in self.neighbors(first_in.data):
 					if node.visited == False:
 						path.append(node.data)
 						node.visited = True
-						queue.enqueue(node)
+						queue.put(node)
 		return path
+	
+	def dijkstra_algorithm(self, start_node, target):
+		min_path = PriorityQueue()
+		best_answer = -1
+		for node in self.nodes:
+			node.visited = False
+			if node.data == start_node:
+				found = True
+				current = node
+		if not found:
+			raise Exception("The start node doesn't appear to be in the graph")
+		for node in self.nodes:
+			if node.data == target:
+				found = True
+				end = node
+		if not found:
+			raise Exception("That target node doesn't appear to be in the graph")
+		min_path.put((0, [current.data]))
+		while not min_path.empty():
 
+			shortest = min_path.get()
+			current_weight = shortest[0]
+			path = shortest[1]
+			lastval = path.pop()
+			path.append(lastval)
+			lastnode = self.return_node(lastval)
+			lastnode.visited = True
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+			for neighbor in self.neighbors(lastval):
+				if neighbor.visited == False:
+					weight = self.edge_weight(lastval, neighbor.data)
+					new_path = path[:]
+					new_path.append(neighbor.data)
+					new_min = current_weight + weight
+					if neighbor == end:
+						if best_answer == -1 or best_answer >= new_min:
+							best_answer = new_min
+							yield (new_min, new_path)
+					min_path.put((new_min, new_path))
 
 
 
