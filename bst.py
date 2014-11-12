@@ -76,11 +76,11 @@ class Binary_search_tree(object):
 			else:
 				return rightD + 1
 
-	def balance(self):
-		if self.root is None:
+	def balance(self, start):
+		if start is None:
 			return 0
-		leftSide = self.root.left
-		rightSide = self.root.right
+		leftSide = start.left
+		rightSide = start.right
 		leftHeight = self.__max_depth(leftSide)
 		rightHeight = self.__max_depth(rightSide)
 		return leftHeight - rightHeight
@@ -138,7 +138,7 @@ class Binary_search_tree(object):
 		return (item for item in breadth_first_list)
 
 	def adjust_balance(self):
-		current_balance = self.balance()
+		current_balance = self.balance(self.root)
 		while current_balance > 1 or current_balance < -1:
 			if current_balance < -1:
 				temp = self.root
@@ -150,7 +150,7 @@ class Binary_search_tree(object):
 				self.root = self.root.left
 				temp.left = None
 				self._recombine(temp)
-			current_balance = self.balance()
+			current_balance = self.balance(self.root)
 
 	def _recombine(self, node):
 		val = node.data
@@ -175,7 +175,42 @@ class Binary_search_tree(object):
 				else:
 						current = current.left	
 
+	def avl_balance(self):
+		current_balance = self.balance(self.root)
+		while current_balance > 1 or current_balance < -1:
+			### Left subtree is larger than right ###
+			if current_balance > 1:
+				### Left/Right case ###
+				if self.balance(self.root.left) < 0:
+					self.rotate_left(self.root.left)
 
+				### Left/Left case ###
+				self.rotate_right(self.root)
+			### Right subree is larger than left ###
+			if current_balance < -1:
+
+				### Right/Left case ###
+				if self.balance(self.root.right) > 0:
+					self.rotate_right()
+				### Right/Right case ###
+				self.rotate_left(self.root)
+			current_balance = self.balance(self.root)
+
+	def rotate_right(self, start):
+		new_root = self.root.left
+		new_left_sub = new_root.right
+		prev_root = self.root
+		self.root = new_root
+		prev_root.left = new_left_sub
+		new_root.right = prev_root
+
+	def rotate_left(self, start):
+		new_root = self.root.right
+		new_left_sub = new_root.left
+		prev_root = self.root
+		self.root = new_root
+		prev_root.right = new_left_sub
+		new_root.left = prev_root
 
 
 

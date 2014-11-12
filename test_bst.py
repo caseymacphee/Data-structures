@@ -51,17 +51,17 @@ def test_depth():
 
 def test_balance():
 	newtree = Binary_search_tree()
-	assert newtree.balance() == 0
+	assert newtree.balance(newtree.root) == 0
 	newtree.insert(5)
-	assert newtree.balance() == 0
+	assert newtree.balance(newtree.root) == 0
 	newtree.insert(4)
-	assert newtree.balance() == 1
+	assert newtree.balance(newtree.root) == 1
 	newtree.insert(6)
-	assert newtree.balance() == 0
+	assert newtree.balance(newtree.root) == 0
 	newtree.insert(7)
-	assert newtree.balance() == -1
+	assert newtree.balance(newtree.root) == -1
 	newtree.insert(8)
-	assert newtree.balance() == -2
+	assert newtree.balance(newtree.root) == -2
 
 def test_traversal():
 	newtree = Binary_search_tree()
@@ -140,7 +140,7 @@ def test_adjust_balance():
 	for num in ordered_gen:
 		ordered_list.append(num)
 	assert ordered_list == [1,2,3,4,5,6,7,8,9,10]
-	assert newtree.balance() < 2 and newtree.balance() > -2
+	assert newtree.balance(newtree.root) < 2 and newtree.balance(newtree.root) > -2
 	newtree = Binary_search_tree()
 	newtree.insert(9)
 	newtree.insert(11)
@@ -165,20 +165,68 @@ def test_adjust_balance():
 	for num in ordered_gen:
 		ordered_list.append(num)
 	assert ordered_list == [-10,-1,0,1,1,2,2,3,4,4,6,6,7,8,9,11,15]
-	assert newtree.balance() < 2 and newtree.balance() > -2
+	assert newtree.balance(newtree.root) < 2 and newtree.balance(newtree.root) > -2
 	newtree = Binary_search_tree()
 	newtree.insert(5)
 	newtree.insert(4)
 	newtree.insert(6)
-	noeffect = newtree.balance()
+	noeffect = newtree.balance(newtree.root)
 	newtree.adjust_balance()
-	afteradjust = newtree.balance()
+	afteradjust = newtree.balance(newtree.root)
 	assert noeffect == afteradjust
 
-
-
-
-
+def test_avl_balance():
+	newtree = Binary_search_tree()
+	newtree.insert(1)
+	newtree.insert(2)
+	newtree.insert(3)
+	newtree.insert(4)
+	newtree.insert(5)
+	newtree.insert(6)
+	newtree.insert(7)
+	newtree.insert(8)
+	newtree.insert(9)
+	newtree.insert(10)
+	newtree.avl_balance()
+	ordered_gen = newtree.in_order()
+	ordered_list = []
+	for num in ordered_gen:
+		ordered_list.append(num)
+	assert ordered_list == [1,2,3,4,5,6,7,8,9,10]
+	assert newtree.balance(newtree.root) < 2 and newtree.balance(newtree.root) > -2
+	newtree = Binary_search_tree()
+	newtree.insert(9)
+	newtree.insert(11)
+	newtree.insert(2)
+	newtree.insert(8)
+	newtree.insert(6)
+	newtree.insert(1)
+	newtree.insert(-10)
+	newtree.insert(4)
+	newtree.insert(15)
+	newtree.insert(-1)
+	newtree.insert(0)
+	newtree.insert(4)
+	newtree.insert(6)
+	newtree.insert(7)
+	newtree.insert(3)
+	newtree.insert(2)
+	newtree.insert(1)
+	newtree.avl_balance()
+	ordered_gen = newtree.in_order()
+	ordered_list = []
+	for num in ordered_gen:
+		ordered_list.append(num)
+	assert ordered_list == [-10,-1,0,1,1,2,2,3,4,4,6,6,7,8,9,11,15]
+	assert newtree.balance(newtree.root) < 2 and newtree.balance(newtree.root) > -2
+	newtree = Binary_search_tree()
+	newtree.insert(5)
+	newtree.insert(4)
+	newtree.insert(6)
+	noeffect = newtree.balance(newtree.root)
+	newtree.avl_balance()
+	afteradjust = newtree.balance(newtree.root)
+	assert noeffect == afteradjust
 
 
 
