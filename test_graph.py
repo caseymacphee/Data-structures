@@ -165,6 +165,35 @@ def test_dijstra():
 	assert answer.next() == (4, ['A', 'B', 'E', 'D', 'C'])
 	assert answer.next() == (4, ['A', 'H', 'G', 'C'])
 
+def test_BF_path():
+	graph = Graph()
+	graph.directed = True
+	graph.add_edge('A', 'B', -3)
+	graph.add_edge('B', 'C', 1)
+	graph.add_edge('C', 'D', 1)
+	graph.add_edge('D', 'E', 1)
+	weight_dict, predecessor = graph.Bellman_Ford('A')
+	assert weight_dict['A'] == 0
+	assert weight_dict['B'] == -3
+	assert weight_dict['C'] == -2
+	assert weight_dict['D'] == -1
+	assert weight_dict['E'] == 0
+	assert predecessor['B'] == 'A'
+	assert predecessor['C'] == 'B'
+	assert predecessor['D'] == 'C'
+	assert predecessor['E'] == 'D'
+	with pytest.raises(Exception):
+		assert predecessor['A'] == 'Nothing here'
+	graph = Graph()
+	graph.add_edge('A', 'B', -3)
+	graph.add_edge('B', 'C', 1)
+	graph.add_edge('C', 'D', 1)
+	graph.add_edge('D', 'E', 1)
+	with pytest.raises(Exception):
+		weight, predecessor = graph.Bellman_Ford('A')
+
+
+
 
 
 

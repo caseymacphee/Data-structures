@@ -5,7 +5,6 @@ class Vertice(object):
  	def __init__(self, data = None):
  		self.data = data
  		self.visited = False
- 		self.directed = False
 
  	def __str__(self):
  		return str(self.data)
@@ -23,6 +22,7 @@ class Graph(object):
 	def __init__(self):
 		self.nodes = []
 		self.edges = []
+		self.directed = False
 
 	def nodes(self):
 		return self.nodes
@@ -196,6 +196,29 @@ class Graph(object):
 							yield (new_min, new_path)
 					min_path.put((new_min, new_path))
 
+	def Bellman_Ford(self, source):
+		if self.directed == False:
+			raise Exception("Bellman Ford opperates on directed graphs only")
+		weight = {}
+		predecessor = {}
+		for node in self.nodes:
+			if node.data == source:
+				weight[node.data] = 0
+			else:
+				weight[node.data] = float("inf")
+				predecessor[node.data] = None
+
+		for node in self.nodes:
+			for edge in self.edges:
+				if weight[edge.vert1.data] + edge.weight < weight[edge.vert2.data]:
+					weight[edge.vert2.data] = weight[edge.vert1.data] + edge.weight
+					predecessor[edge.vert2.data] = edge.vert1.data
+
+		for edge in self.edges:
+			if weight[edge.vert1.data] + edge.weight < weight[edge.vert2.data]:
+				raise Exception("Graph contains a negative-weight cycle")
+
+		return weight, predecessor
 
 
 
