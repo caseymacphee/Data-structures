@@ -192,6 +192,33 @@ def test_BF_path():
 	with pytest.raises(Exception):
 		weight, predecessor = graph.Bellman_Ford('A')
 
+graph = Graph()
+graph.directed = True
+graph.add_edge('A', 'B', 1)
+graph.add_edge('E', 'B', 1)
+graph.add_edge('E', 'D', -1)
+graph.add_edge('E', 'C', 2)
+graph.add_edge('E', 'G', 3)
+graph.add_edge('D', 'G', 1)
+graph.add_edge('C', 'D', -1)
+graph.add_edge('G', 'C', 1)
+graph.add_edge('G', 'H', 2)
+graph.add_edge('H', 'A', 1)
+graph.add_edge('B', 'E', -5)
+graph.add_node('F')
+with pytest.raises(Exception):
+	### Containes a negative weight cycle ###
+	weight, predessesor = graph.Bellman_Ford('A')
+
+graph.del_edge('B', 'E')
+graph.add_edge('B', 'E', 2)
+weight, predecessor = graph.Bellman_Ford('A')
+
+for key, value in weight.iteritems():
+	print key, value
+for key, value in predecessor.iteritems():
+	print key, value
+
 
 
 
