@@ -23,9 +23,8 @@ class HashMap(object):
     def __init__(self, size):
         self.TABLE_SIZE = size
         self.table = []
-        for entry in xrange(self.TABLE_SIZE):
+        for entry in xrange(self.TABLE_SIZE -1):
             self.table.append(None)
-
 
     def hash(self, key):
         if type(key) is not str:
@@ -33,25 +32,29 @@ class HashMap(object):
         ord_sum = 0
         for char in key:
             ord_sum += ord(char)
+        length = len(key)
+        ord_sum = ord_sum * length
         return ord_sum
 
     def set(self, key, val):
-        if type(key) is not int:
-            raise Exception("Key must be a number")
+        if type(key) is not str:
+            raise Exception("Key must be a string")
         else:
-            adjusted_key = key % self.TABLE_SIZE - 1
+            hash_key = self.hash(key)
+            adjusted_key = hash_key % self.TABLE_SIZE
             current = self.table[adjusted_key]
             if current is None:
                 self.table[adjusted_key] = LinkedEntry(key, val)
             else:
-                prev = current
+                prev = None
                 while current is not None:
                     prev = current
                     current = current.next
                 prev.next = LinkedEntry(key, val)
             
     def get(self, key):
-        current = self.table[key % self.TABLE_SIZE - 1]
+        hash_key = self.hash(key)
+        current = self.table[hash_key % self.TABLE_SIZE]
         while current is not None:
             if current.key == key:
                 return current.value
